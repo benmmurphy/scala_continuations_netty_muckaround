@@ -6,7 +6,8 @@ import org.slf4j._
 import com.jayway.jsonpath._
 
 class HttpClient {
-  val client:AsyncHttpClient = new AsyncHttpClient()
+  val client:AsyncHttpClient = new AsyncHttpClient(new AsyncHttpClientConfig.Builder().setAllowPoolingConnection(false).build())
+
   val logger:Logger = LoggerFactory.getLogger(classOf[HttpClient]);
   def json(url:String) = {
     val response = get(url)

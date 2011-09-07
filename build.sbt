@@ -4,7 +4,7 @@ version := "1.0"
 
 scalaVersion := "2.9.0"
 
-libraryDependencies += "com.ning" % "async-http-client" % "1.6.2"
+libraryDependencies += "com.ning" % "async-http-client" % "1.6.4"
 
 libraryDependencies += "org.jboss.netty" % "netty" % "3.2.5.Final"
 
