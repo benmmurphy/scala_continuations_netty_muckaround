@@ -20,6 +20,8 @@ libraryDependencies += "ch.qos.logback" % "logback-core" % "0.9.29"
 
 libraryDependencies += "com.jayway.jsonpath" % "json-path" % "0.5.5"
 
+libraryDependencies += "org.scalatest" % "scalatest_2.9.0" % "1.6.1"
+
 autoCompilerPlugins := true
 
 addCompilerPlugin("org.scala-lang.plugins" % "continuations" % "2.9.0")
