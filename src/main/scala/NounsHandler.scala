@@ -4,6 +4,8 @@ import java.awt.image._
 import RichBufferedImage._
 import org.jboss.netty.handler.codec.http.HttpResponseStatus._
 import org.slf4j._
+import java.awt._
+
 class NounsHandler extends Handler {
   val http:HttpClient = new HttpClient()
   val logger:Logger = LoggerFactory.getLogger(classOf[NounsHandler]);
@@ -12,7 +14,7 @@ class NounsHandler extends Handler {
     val result = createImage(term)
 
     result match {
-      case (imageBytes, contentType) => new ServerResponse(OK, Some(Right(imageBytes)), Some(contentType))
+      case (imageBytes, contentType) => new ServerResponse(OK, imageBytes, contentType)
     }
   }
 
@@ -26,7 +28,7 @@ class NounsHandler extends Handler {
       val (imageBytes, _) = http.bytes(imageUrl).get
       val bufferedImage = parseImage(imageBytes).get
       
-      (processImage(bufferedImage), "image/png")
+      (processImage(bufferedImage, term), "image/png")
   }
 
   def parseImage(bytes:Array[Byte]) = {
@@ -37,7 +39,16 @@ class NounsHandler extends Handler {
     }
   }
 
-  def processImage(image:BufferedImage) = {
+  def processImage(image:BufferedImage, term:String) = {
+    val caption = "FUCK YEAH " + term.toUpperCase()
+    image.withGraphics { graphics =>
+      val font = new Font("Helvetica", Font.BOLD, 48)
+      graphics.setFont(font)
+      graphics.setColor(Color.WHITE)
+      val bounds = font.getStringBounds(caption, graphics.getFontRenderContext())
+      graphics.drawString(caption, image.getWidth() / 2 - (bounds.getWidth() / 2).toInt, image.getHeight())
+    }
+    
     image.toBytes("png")
   }
 }

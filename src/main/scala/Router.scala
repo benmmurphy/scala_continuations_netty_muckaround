@@ -1,9 +1,10 @@
 import scala.collection.immutable._
+import scala.util.continuations._
 
 trait RouterDSL  { 
   val _router = new Router()
 
-  def get(path:String)(block : (Context  => Unit)) = {
+  def get(path:String)(block : (Context)  => ServerResponse @suspendable) = {
     _router.addGet(path, block)  
   }
 
@@ -21,15 +22,25 @@ trait RouterDSL  {
 
 }
 
-class Router {
-  private var paths = List[(String, (Context) => Unit)]()
+case class Path (
+  val method:String,
+  val path:String,
+  val action:(Context) => ServerResponse @suspendable) {
+}
 
-  def addGet(path:String, block : (Context => Unit)) = {
-    paths =  (path,  block) :: paths
+class Router {
+  private var paths = List[Path]()
+
+  def addGet(path:String, block : (Context) => ServerResponse @suspendable) = {
+    paths =  new Path("GET", path,  block) :: paths
   }
 
   def firstPath = {
     paths.head
+  }
+
+  def matchRequest(request:ServerRequest) = {
+    paths.find(path => path.method == request.method && path.path == request.path)
   }
 }
   

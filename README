@@ -7,7 +7,7 @@ sbt run
 DSL Weirdness 
 ------------
 
-  get("/nouns/:term")  { implicit ctx =>
+  get("/nouns")  { implicit ctx =>
     println(params)
   }
 

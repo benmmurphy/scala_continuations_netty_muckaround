@@ -8,7 +8,7 @@ object HttpServer {
     val bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(
       Executors.newCachedThreadPool(),
       Executors.newCachedThreadPool()))
-    bootstrap.setPipelineFactory(new HttpServerPipelineFactory(new NounsHandler()))
+    bootstrap.setPipelineFactory(new HttpServerPipelineFactory(new NounsDSLHandler()))
     bootstrap.bind(new InetSocketAddress(8080))
     Unit
   }

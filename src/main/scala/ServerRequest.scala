@@ -2,7 +2,9 @@ import org.jboss.netty.handler.codec.http._
 import collection.JavaConversions._
 
 class ServerRequest (
-  val params: scala.collection.mutable.Map[String,java.util.List[String]]) {
+  val method: String,
+  val path: String,
+  val params: scala.collection.immutable.Map[String,Seq[String]]) {
 
   def param(name:String) : Option[String] = {
     params.get(name) match {
@@ -15,7 +17,8 @@ class ServerRequest (
 object ServerRequest {
   def apply(req:HttpRequest) = {
     val queryStringDecoder = new QueryStringDecoder(req.getUri());
-    
-    new ServerRequest(queryStringDecoder.getParameters())
+    val params = mapAsScalaMap(queryStringDecoder.getParameters()).mapValues(asScalaBuffer _).toMap
+
+    new ServerRequest(req.getMethod().getName(), queryStringDecoder.getPath(), params)
   }
 }

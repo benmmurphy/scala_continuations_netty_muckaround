@@ -1,8 +1,15 @@
 import scala.util.continuations._
+import org.jboss.netty.handler.codec.http.HttpResponseStatus._
 
 trait DSLHandler extends Handler with RouterDSL {
   def handle(request:ServerRequest) : ServerResponse @suspendable = {
-    shiftUnit(null)
+    val path = _router.matchRequest(request)
+    path match {
+        case None => shiftUnit(new ServerResponse(NOT_FOUND))
+        case Some(p) => {
+            p.action(new Context())
+        }
+    }
   }    
 }
 
