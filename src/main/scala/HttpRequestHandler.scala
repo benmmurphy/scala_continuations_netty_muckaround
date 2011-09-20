@@ -20,7 +20,7 @@ class HttpRequestHandler (val handler: Handler)  extends SimpleChannelUpstreamHa
       val future = e.getChannel().write(response)
       future.addListener(ChannelFutureListener.CLOSE)  
     }
-    logger.info("worker returning to the pool")
+    logger.debug("worker returning to the pool")
     /* we fall off here when we block */
 
   }

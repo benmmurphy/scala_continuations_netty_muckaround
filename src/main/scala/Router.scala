@@ -1,38 +1,11 @@
 import scala.collection.immutable._
-import scala.util.continuations._
-
-trait RouterDSL  { 
-  val _router = new Router()
-
-  def get(path:String)(block : (Context)  => ServerResponse @suspendable) = {
-    _router.addGet(path, block)  
-  }
-
-  def router = {
-    _router
-  }
-
-  def request(implicit ctx:Context) : ServerRequest = {
-    null
-  }
-
-  def params(implicit ctx:Context) : Map[String, String] = {
-    null
-  }
-
-}
-
-case class Path (
-  val method:String,
-  val path:String,
-  val action:(Context) => ServerResponse @suspendable) {
-}
+import util.continuations._
 
 class Router {
   private var paths = List[Path]()
 
-  def addGet(path:String, block : (Context) => ServerResponse @suspendable) = {
-    paths =  new Path("GET", path,  block) :: paths
+  def addGet(path:String, action: Action) = {
+    paths =  new Path("GET", PathMatcher(path),  action) :: paths
   }
 
   def firstPath = {
@@ -40,7 +13,18 @@ class Router {
   }
 
   def matchRequest(request:ServerRequest) = {
-    paths.find(path => path.method == request.method && path.path == request.path)
+
+    var params:Option[Tuple2[Action, Map[String, String]]] = None
+
+    for (path <- paths) {
+      path.matches(request.method, request.path) match {
+        case Some(p) => params = Some((path.action, p))
+        case None => None
+      }
+    }
+
+    params
+
   }
 }
   

@@ -6,9 +6,7 @@ trait DSLHandler extends Handler with RouterDSL {
     val path = _router.matchRequest(request)
     path match {
         case None => shiftUnit(new ServerResponse(NOT_FOUND))
-        case Some(p) => {
-            p.action(new Context())
-        }
+        case Some((action, params)) =>  action(Context(request, params))
     }
   }    
 }

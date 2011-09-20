@@ -20,12 +20,12 @@ class NounsHandler extends Handler {
 
   def createImage(term:String) = {
       logger.info("Requesting JSON from google image search") 
-      val json = http.json("http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + term).get
+      val json = http.json("http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + term)
       val imageUrl = json.string("responseData.results[0].url").get
       logger.info("Received imageUrl: {}", imageUrl)
 
       logger.info("Requesting image")
-      val (imageBytes, _) = http.bytes(imageUrl).get
+      val (imageBytes, _) = http.bytes(imageUrl)
       val bufferedImage = parseImage(imageBytes).get
       
       (processImage(bufferedImage, term), "image/png")

@@ -3,12 +3,14 @@ import org.jboss.netty.channel.socket.nio._
 import java.net._
 import java.util.concurrent._
 
-object HttpServer {
+trait HttpServer {
+  def handler:Handler
+
   def main(args:Array[String]) = {
     val bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(
       Executors.newCachedThreadPool(),
       Executors.newCachedThreadPool()))
-    bootstrap.setPipelineFactory(new HttpServerPipelineFactory(new NounsDSLHandler()))
+    bootstrap.setPipelineFactory(new HttpServerPipelineFactory(handler))
     bootstrap.bind(new InetSocketAddress(8080))
     Unit
   }

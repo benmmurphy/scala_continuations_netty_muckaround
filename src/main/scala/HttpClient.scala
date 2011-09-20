@@ -9,17 +9,18 @@ class HttpClient {
   val client:AsyncHttpClient = new AsyncHttpClient(new AsyncHttpClientConfig.Builder().setAllowPoolingConnection(false).build())
 
   val logger:Logger = LoggerFactory.getLogger(classOf[HttpClient]);
+
   def json(url:String) = {
     val response = get(url)
     val json = new ObjectMapper().readValue(response.getResponseBody(), classOf[Object])
-    Some(new JSONResource(json))
+    new JSONResource(json)
   }
 
 
 
   def bytes(url:String)  = {
     val response = get(url)
-    Some((IOUtils.toByteArray(response.getResponseBodyAsStream()), response.getContentType()))
+    (IOUtils.toByteArray(response.getResponseBodyAsStream()), response.getContentType())
   }
 
   def get(url:String) : Response @suspendable = {
@@ -54,9 +55,3 @@ class HttpClient {
   }
 }
 
-class JSONResource (val json:Object) {
-  def string(path:String) : Option[String] = {
-    val result:String = JsonPath.read(json, path)
-    if (result == null)  None else Some(result)
-  }
-}

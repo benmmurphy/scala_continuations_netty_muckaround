@@ -8,6 +8,8 @@ class ServerResponse private (
   val body: Option[Either[String,Array[Byte]]] = None,
   val contentType: Option[String] = None) {
 
+  def this(status:HttpResponseStatus, body:String) =  this(status, Some(Left(body)), Some("text/html;charset=utf8"))
+
   def this(status:HttpResponseStatus) = this(status, None, None)
   def this(status:HttpResponseStatus, body:Array[Byte], contentType:String) = this(status, Some(Right(body)), Some(contentType))
   
