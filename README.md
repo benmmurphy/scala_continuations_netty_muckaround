@@ -3,6 +3,15 @@
 1. install simple built tool https://github.com/harrah/xsbt/wiki
 2. sbt run
 
+#Non-Blocking
+
+Netty + Async Http Client (https://github.com/sonatype/async-http-client) are used to provide a scalable NIO server that can make 
+http calls without blocking.
+
+Use getAsync and make sure the return type of the block has the attribute @suspendable. If you make a call through the included
+http library then the block will become @suspendable. If you don't need to do any blocking calls then you can use a plain
+get.
+
 #DSL Weirdness
 
     get("/nouns")  { implicit ctx =>
