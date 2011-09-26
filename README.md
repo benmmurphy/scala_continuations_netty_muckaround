@@ -68,4 +68,7 @@ but no thread locals can be pain. not sure what to do at the moment.
     }
 
 #See Also
-http://days2011.scala-lang.org/node/138/288
+* http://days2011.scala-lang.org/node/138/288
+* http://purplefox.github.com/node.x/
+* http://www.scalatra.org/
+* http://circumflex.ru/
