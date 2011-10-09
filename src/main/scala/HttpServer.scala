@@ -6,12 +6,11 @@ import java.util.concurrent._
 trait HttpServer {
   def handler:Handler
 
-  def main(args:Array[String]) = {
+  def main(args:Array[String]) : Unit = {
     val bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(
       Executors.newCachedThreadPool(),
       Executors.newCachedThreadPool()))
     bootstrap.setPipelineFactory(new HttpServerPipelineFactory(handler))
     bootstrap.bind(new InetSocketAddress(8080))
-    Unit
   }
 }
