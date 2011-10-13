@@ -68,6 +68,11 @@ but no thread locals can be pain. not sure what to do at the moment.
       ....
     }
 
+#Example App Sucks
+
+1. Doesn't ensure image is big enough to fit the text overlay or make sure text is small enough
+2. Need to use a black outline around the text to make it look pretty
+
 #See Also
 * http://days2011.scala-lang.org/node/138/288
 * http://purplefox.github.com/node.x/
