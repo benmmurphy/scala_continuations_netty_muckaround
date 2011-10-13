@@ -2,6 +2,7 @@
 
 1. install simple built tool https://github.com/harrah/xsbt/wiki
 2. sbt run
+3. http://localhost:8080/nouns
 
 #Non-Blocking
 
